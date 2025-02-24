@@ -1,9 +1,13 @@
 <template>
-  <div class="flex bg-blue-200 justify-between h-screen">
-    <div class="border border-red-500 w-64">
-      <TheSidebar />
+  <div class="flex bg-stone-400 justify-between h-screen">
+    <div class="flex flex-grow max-w-[1024px] min-w-[360px] mx-auto bg-stone-200 shadow-2xl">
+      <div class="min-w-64">
+        <TheSidebar />
+      </div>
+      <div class="flex-grow overflow-y-auto">
+        <RouterView />
+      </div>
     </div>
-    <div class="border flex-grow"><RouterView /></div>
   </div>
 </template>
 

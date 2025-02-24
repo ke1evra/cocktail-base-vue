@@ -1,8 +1,14 @@
 <template>
-  <div class="flex flex-col p-3">
-    <RouterLink v-for="cocktailCode in cocktailsCodes" :to="`/c/${cocktailCode}`" :key="cocktailCode">{{
-      cocktailCode
-    }}</RouterLink>
+  <div class="flex flex-col bg-stone-300 h-full">
+    <RouterLink
+      v-for="cocktailCode in cocktailsCodes"
+      :to="`/c/${cocktailCode}`"
+      activeClass="bg-stone-500 text-white"
+      class="p-3 transition-colors text-stone-800 uppercase"
+      :key="cocktailCode"
+    >
+      {{ cocktailCode }}
+    </RouterLink>
   </div>
 </template>
 

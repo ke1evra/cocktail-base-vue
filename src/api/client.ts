@@ -4,14 +4,12 @@ import { FIELD_NAMES } from '@/constants';
 
 export const client = createFetch({
   defaults: {
-    baseURL: import.meta.env.VITE_API_URL,
-
     onRequest({ options }) {
-      const token = localStorage.getItem(FIELD_NAMES.TOKEN);
+      // const token = localStorage.getItem(FIELD_NAMES.TOKEN);
 
       options.headers = {
         ...options.headers,
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        // ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
     },
 
