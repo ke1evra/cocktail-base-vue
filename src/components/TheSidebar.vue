@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div v-for="cocktailCode in cocktailsCodes" :key="cocktailCode">{{ cocktailCode }}</div>
+  <div class="flex flex-col p-3">
+    <RouterLink v-for="cocktailCode in cocktailsCodes" :to="`/c/${cocktailCode}`" :key="cocktailCode">{{
+      cocktailCode
+    }}</RouterLink>
   </div>
 </template>
 

@@ -1,17 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { DEFAULT_COCKTAIL_CODE } from '@/constants';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '',
+      path: '/',
       name: 'home',
-      redirect: { name: 'cocktails' },
+      redirect: { name: 'cocktailPage', params: { cocktailCode: DEFAULT_COCKTAIL_CODE } },
     },
     {
-      path: 'c',
+      path: '/c',
       name: 'cocktails',
       component: () => import('../views/CocktailsView.vue'),
+      redirect: { name: 'cocktailPage', params: { cocktailCode: DEFAULT_COCKTAIL_CODE } },
       children: [
         {
           path: ':cocktailCode',

@@ -2,9 +2,10 @@ import { ref, reactive } from 'vue';
 import { defineStore } from 'pinia';
 import type { Drink } from '@/types';
 import { getDrinksSearch } from '@/api/modules/cocktails.ts';
+import { BASE_COCKTAIL_CODES } from '@/constants';
 
-export const useCocktailsStore = defineStore('counter', () => {
-  const cocktailsCodes = ref(Object.freeze(['margarita', 'mojito', 'a1', 'kir']));
+export const useCocktailsStore = defineStore('cocktails', () => {
+  const cocktailsCodes = ref(BASE_COCKTAIL_CODES);
 
   const cocktailsMap = reactive<Record<string, Drink[]>>({});
 
