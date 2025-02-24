@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,20 +6,21 @@ const router = createRouter({
     {
       path: '',
       name: 'home',
-      redirect: '/b'
+      redirect: { name: 'cocktails' },
     },
-    { path: '/a', redirect: { name: 'foo' }},
     {
       path: 'c',
       name: 'cocktails',
-      component: () => import('../views/CocktailsPage.vue'),
-      children: [{
-        path: ':cocktailCode',
-        name: 'cocktailPage',
-        component: () => import('../views/CocktailContent.vue')
-      }]
+      component: () => import('../views/CocktailsView.vue'),
+      children: [
+        {
+          path: ':cocktailCode',
+          name: 'cocktailPage',
+          component: () => import('../components/CocktailContent.vue'),
+        },
+      ],
     },
   ],
-})
+});
 
-export default router
+export default router;

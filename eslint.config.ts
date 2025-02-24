@@ -1,36 +1,173 @@
-import pluginVue from 'eslint-plugin-vue'
-import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-import pluginVitest from '@vitest/eslint-plugin'
-import pluginPlaywright from 'eslint-plugin-playwright'
-import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
+import globals from 'globals';
+import stylistic from '@stylistic/eslint-plugin';
+import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
+import pluginVue from 'eslint-plugin-vue';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
-// To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
-// import { configureVueProject } from '@vue/eslint-config-typescript'
-// configureVueProject({ scriptLangs: ['ts', 'tsx'] })
-// More info at https://github.com/vuejs/eslint-config-typescript/#advanced-setup
-
-export default defineConfigWithVueTs(
+export default [
   {
-    name: 'app/files-to-lint',
-    files: ['**/*.{ts,mts,tsx,vue}'],
+    name: 'ignores',
+    ignores: ['dist/'],
   },
-
   {
-    name: 'app/files-to-ignore',
-    ignores: ['**/dist/**', '**/dist-ssr/**', '**/coverage/**'],
+    name: 'js: recommended',
+    ...pluginJs.configs.recommended,
   },
-
-  pluginVue.configs['flat/essential'],
-  vueTsConfigs.recommended,
-  
   {
-    ...pluginVitest.configs.recommended,
-    files: ['src/**/__tests__/*'],
+    name: 'prettier: recommended',
+    ...eslintPluginPrettierRecommended,
   },
-  
+  ...tseslint.configs.recommended,
+  ...pluginVue.configs['flat/essential'],
   {
-    ...pluginPlaywright.configs['flat/recommended'],
-    files: ['e2e/**/*.{test,spec}.{js,ts,jsx,tsx}'],
+    name: 'global languageOptions',
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+      },
+    },
   },
-  skipFormatting,
-)
+  {
+    name: 'files pattern',
+    files: ['**/*.{js,mjs,cjs,ts,vue}'],
+  },
+  {
+    name: 'stylistic',
+    plugins: {
+      '@stylistic/js': stylistic,
+      '@stylistic/ts': stylistic,
+    },
+    rules: {
+      '@stylistic/js/semi': ['error', 'always'],
+      '@stylistic/js/block-spacing': ['error', 'always'],
+      '@stylistic/js/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/js/lines-around-comment': [
+        'error',
+        {
+          beforeBlockComment: false,
+          allowBlockStart: true,
+          allowObjectStart: true,
+          allowArrayStart: true,
+        },
+      ],
+      '@stylistic/js/padding-line-between-statements': [
+        'error',
+        {
+          blankLine: 'always',
+          prev: '*',
+          next: ['return', 'export', 'function'],
+        },
+        { blankLine: 'always', prev: ['const', 'let', 'var'], next: '*' },
+        {
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
+        },
+      ],
+    },
+  },
+  {
+    name: 'typescript',
+    rules: {
+      '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/no-empty-object-type': ['error', { allowInterfaces: 'with-single-extends' }],
+    },
+  },
+  {
+    name: 'global rules',
+    rules: {
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-unexpected-multiline': 'error',
+      'no-var': 'error',
+      'no-unsafe-optional-chaining': 'error',
+      curly: ['error', 'all'],
+      'arrow-body-style': ['error', 'as-needed'],
+      'no-sparse-arrays': ['off'],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: 'pinia',
+              importNames: ['storeToRefs'],
+              message:
+                'Использование storeToRefs запрещено. Оставляй переменные сторов как неймспейсы, в проекте и без этого волшебства фигни хватает)))',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    name: 'vue rules',
+    rules: {
+      'vue/prefer-separate-static-class': 'error',
+      'vue/no-ref-as-operand': 'error',
+      'vue/require-default-prop': 'off',
+      'vue/multi-word-component-names': 'off',
+      'vue/no-multiple-template-root': 'off',
+      'vue/component-name-in-template-casing': [
+        'error',
+        'PascalCase',
+        {
+          registeredComponentsOnly: true,
+        },
+      ],
+      'vue/padding-line-between-blocks': ['error', 'always'],
+      'vue/attributes-order': [
+        'error',
+        {
+          order: [
+            'DEFINITION',
+            'LIST_RENDERING',
+            'CONDITIONALS',
+            'GLOBAL',
+            'OTHER_ATTR',
+            'RENDER_MODIFIERS',
+            ['UNIQUE', 'SLOT'],
+            'TWO_WAY_BINDING',
+            'OTHER_DIRECTIVES',
+            'EVENTS',
+            'CONTENT',
+          ],
+          alphabetical: false,
+        },
+      ],
+      'vue/no-empty-component-block': 'error',
+      'vue/block-order': [
+        'error',
+        {
+          order: ['template', 'script', 'style'],
+        },
+      ],
+      'vue/v-bind-style': [
+        'error',
+        'shorthand',
+        {
+          sameNameShorthand: 'always',
+        },
+      ],
+      'vue/prop-name-casing': ['error', 'camelCase'],
+      'vue/custom-event-name-casing': ['error', 'camelCase', { ignores: ['/^(?:[a-z]+[A-Z]*)+:(?:[a-z]+[A-Z]*)+$/'] }],
+      'vue/attribute-hyphenation': ['error', 'never'],
+      'vue/v-on-event-hyphenation': ['error', 'never'],
+      'vue/prefer-true-attribute-shorthand': ['error'],
+      'vue/no-boolean-default': ['error'],
+    },
+  },
+  {
+    name: 'prettier',
+    rules: {
+      'prettier/prettier': [
+        'error',
+        {
+          printWidth: 120,
+          singleQuote: true,
+          endOfLine: 'auto',
+        },
+      ],
+    },
+  },
+];
