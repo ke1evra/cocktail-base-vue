@@ -13,16 +13,16 @@
             <div class="text-xs uppercase text-light text-stone-500 mb-1">Instructions:</div>
             <div>{{ cocktail.strInstructions }}</div>
           </div>
-          <div class="flex flex-col">
-            <div class="text-xs uppercase text-light text-stone-500 mb-1">List of ingredients:</div>
-            <div v-for="ingredient in getIngredientsForCocktail(cocktail)" class="flex" :key="ingredient.ingredient">
-              <div>{{ ingredient.ingredient }}</div>
-              <div v-if="ingredient.measure">&nbsp;&mdash;&nbsp;{{ ingredient.measure }}</div>
-            </div>
-          </div>
         </div>
         <div class="">
           <img :src="cocktail.strDrinkThumb" loading="lazy" class="sticky top-3" />
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="text-xs uppercase text-light text-stone-500 mb-1">List of ingredients:</div>
+        <div v-for="ingredient in getIngredientsForCocktail(cocktail)" class="flex" :key="ingredient.ingredient">
+          <div>{{ ingredient.ingredient }}</div>
+          <div v-if="ingredient.measure">&nbsp;&mdash;&nbsp;{{ ingredient.measure }}</div>
         </div>
       </div>
     </div>

@@ -3,8 +3,8 @@
     <RouterLink
       v-for="cocktailCode in cocktailsCodes"
       :to="`/c/${cocktailCode}`"
-      activeClass="bg-stone-500 text-white"
-      class="p-3 transition-colors text-stone-800 uppercase"
+      activeClass="bg-stone-500 text-white "
+      class="transition-colors text-stone-800 uppercase text-sm sm:text-base p-2 sm:p-3"
       :key="cocktailCode"
     >
       {{ cocktailCode }}
